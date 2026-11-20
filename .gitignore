@@ -1,0 +1,3 @@
+# Ignore Rust build output in all projects
+target/
+
