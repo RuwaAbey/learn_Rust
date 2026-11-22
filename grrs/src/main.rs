@@ -15,8 +15,13 @@ fn main() {
 	let args = Cli::parse();
 	println!("pattern: {:?}, path: {:?}", args.pattern, args.path);
 	
-	let file = File::open(args.path).unwrap();
-	let content = BufReader::new(file);
+	let result = File::open(args.path);
+	let content  = match result {
+		Ok(content) => { content },
+		Err(error) => { panic!("Can't dealt with {}, just exit here", error); }
+	};
+
+	let content = BufReader::new(content);
 
 	for line in content.lines() {
 		let line = line.unwrap();
