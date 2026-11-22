@@ -11,14 +11,14 @@ struct Cli {
 	path: std::path::PathBuf,
 }
 
-fn main() {
+fn main() -> Result<(), Box<dyn std::error::Error>> {
 	let args = Cli::parse();
 	println!("pattern: {:?}, path: {:?}", args.pattern, args.path);
 	
 	let result = File::open(args.path);
 	let content  = match result {
 		Ok(content) => { content },
-		Err(error) => { panic!("Can't dealt with {}, just exit here", error); }
+		Err(error) => { return Err(error.into()); }
 	};
 
 	let content = BufReader::new(content);
@@ -28,5 +28,7 @@ fn main() {
 		if line.contains(&args.pattern) {
 			println!("{}",line);
 		}
-	}
+	};
+
+	Ok(())
 }
