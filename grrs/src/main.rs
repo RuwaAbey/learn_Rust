@@ -1,18 +1,16 @@
+use clap::Parser;
+
+/// Search for a pattern in a file and display the lines that contain it.
+#[derive(Parser)]
 struct Cli {
+	/// The pattern to look for
 	pattern: String,
+	/// The path to the file to read
 	path: std::path::PathBuf,
 }
 
 fn main() {
-	// standard library contains the function std::env::args() that gives you an iterator of the given arguements	
-	let pattern = std::env::args().nth(1).expect("no pattern given");
-	let path = std::env::args().nth(2).expect("no path given");
-
-	let args = Cli {
-		pattern,
-		path: std::path::PathBuf::from(path), //PathBuf is like a String but for file system paths that work cross-platform
-	};
-
+	let args = Cli::parse();
 	
 	println!("pattern: {:?}, path: {:?}", args.pattern, args.path);
 }
